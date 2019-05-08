@@ -9,11 +9,15 @@ import java.util.List;
 public abstract class Piece {
 
     protected final int position;
-    protected final Team ally;
+    protected final Team pieceTeam;
 
-    Piece(final int position, final Team ally) {
-        this.ally = ally;
+    Piece(final int position, final Team team) {
+        this.pieceTeam = team;
         this.position = position;
+    }
+
+    public Team getPieceTeam() {
+        return this.pieceTeam;
     }
 
     public abstract List<Move> calcMoves(final Board board);

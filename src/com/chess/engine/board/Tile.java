@@ -27,8 +27,8 @@ public abstract class Tile {
         return piece != null ? new OccupiedTile(tileCoord, piece) : EMPTY_TILES_CACHE.get(tileCoord);
     }
 
-    private Tile(int tileCoord) {
-        this.tileCoord = tileCoord;
+    private Tile(int tileCoords) {
+        this.tileCoord = tileCoords;
     }
 
     public abstract  boolean isOccupied(); //defined in EmptyTile & OccupiedTile
