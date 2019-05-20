@@ -15,7 +15,7 @@ public abstract class Tile {
     private static Map<Integer, EmptyTile> createTiles() {
 
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
-        for(int i = 0; i < 64; i++) {
+        for(int i = 0; i < BoardUtils.NUM_TILES; i++) {
             emptyTileMap.put(i, new EmptyTile(i));
         }
 
@@ -27,11 +27,11 @@ public abstract class Tile {
         return piece != null ? new OccupiedTile(tileCoord, piece) : EMPTY_TILES_CACHE.get(tileCoord);
     }
 
-    private Tile(int tileCoords) {
+    private Tile(final int tileCoords) {
         this.tileCoord = tileCoords;
     }
 
-    public abstract  boolean isOccupied(); //defined in EmptyTile & OccupiedTile
+    public abstract  boolean isOccupied();
 
     public abstract Piece getPiece();
 

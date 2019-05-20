@@ -4,22 +4,22 @@ import com.chess.engine.Team;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 
-import java.util.List;
+import java.util.Collection;
 
 public abstract class Piece {
 
     protected final int position;
-    protected final Team pieceTeam;
+    protected final Team team;
 
     Piece(final int position, final Team team) {
-        this.pieceTeam = team;
+        this.team = team;
         this.position = position;
     }
 
-    public Team getPieceTeam() {
-        return this.pieceTeam;
+    public Team getTeam() {
+        return this.team;
     }
 
-    public abstract List<Move> calcMoves(final Board board);
+    public abstract Collection<Move> calcMoves(final Board board);
 
 }
