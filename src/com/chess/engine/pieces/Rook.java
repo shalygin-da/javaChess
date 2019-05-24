@@ -14,7 +14,7 @@ public class Rook extends Piece{
 
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-8, -1, 1, 8};
 
-    Rook(int position, Team team) {
+    public Rook(final Team team, final int position) {
         super(position, team);
     }
 
@@ -52,5 +52,10 @@ public class Rook extends Piece{
 
     private static boolean isEighthColumnExclusion(final int position, final int potentialMove) {
         return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 1);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.ROOK.toString();
     }
 }

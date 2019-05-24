@@ -5,16 +5,17 @@ import com.chess.engine.pieces.Piece;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Tile {
+public abstract class Tile extends Object{
 
 
-    protected final int tileCoord;
+    protected final int tileCoords;
 
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createTiles();
 
     private static Map<Integer, EmptyTile> createTiles() {
 
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
+
         for(int i = 0; i < BoardUtils.NUM_TILES; i++) {
             emptyTileMap.put(i, new EmptyTile(i));
         }
@@ -22,13 +23,12 @@ public abstract class Tile {
         return emptyTileMap;
     }
 
-    public static Tile create(final int tileCoord, final Piece piece) {
-
-        return piece != null ? new OccupiedTile(tileCoord, piece) : EMPTY_TILES_CACHE.get(tileCoord);
+    public static Tile create(final int tileCoords, final Piece piece) {
+        return piece != null ? new OccupiedTile(tileCoords, piece) : EMPTY_TILES_CACHE.get(tileCoords);
     }
 
     private Tile(final int tileCoords) {
-        this.tileCoord = tileCoords;
+        this.tileCoords = tileCoords;
     }
 
     public abstract  boolean isOccupied();
@@ -51,6 +51,11 @@ public abstract class Tile {
             return null;
         }
 
+        @Override
+        public String toString() {
+            return "-";
+        }
+
     }
 
     public static final class OccupiedTile extends Tile {
@@ -70,6 +75,11 @@ public abstract class Tile {
         @Override
         public Piece getPiece() {
             return piece;
+        }
+
+        @Override
+        public String toString() {
+            return getPiece().getTeam().isBlack() ? getPiece().toString().toLowerCase() : getPiece().toString();
         }
     }
 

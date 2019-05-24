@@ -16,7 +16,7 @@ public class Bishop extends Piece {
 
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9, -7, 7, 9};
 
-    Bishop(int position, Team team) {
+    public Bishop(final Team team, final int position) {
         super(position, team);
     }
 
@@ -54,6 +54,11 @@ public class Bishop extends Piece {
 
     private static boolean isEighthColumnExclusion(final int position, final int potentialMove) {
         return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 9 || potentialMove == -7);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.BISHOP.toString();
     }
 
 }

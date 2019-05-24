@@ -14,7 +14,7 @@ public class Queen extends Piece {
 
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9,-8, -7, -1, 1, 7, 8, 9};
 
-    Queen(int position, Team team) {
+    public Queen(final Team team, final int position) {
         super(position, team);
     }
 
@@ -54,4 +54,8 @@ public class Queen extends Piece {
         return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 9 || potentialMove == -7 || potentialMove == 1);
     }
 
+    @Override
+    public String toString() {
+        return PieceType.QUEEN.toString();
+    }
 }

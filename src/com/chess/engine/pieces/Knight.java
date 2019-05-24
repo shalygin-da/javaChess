@@ -16,7 +16,7 @@ public class Knight extends Piece {
 
     private final static int[] POTENTIAL_MOVE_COORDS = {-17, -15, -10, -6, 6, 10, 15, 17};
 
-    Knight(int position, Team team) {
+    public Knight(final Team team, final int position) {
         super(position, team);
     }
 
@@ -64,5 +64,10 @@ public class Knight extends Piece {
 
     private static boolean isEighthColumnExclusion(final int position, final int potentialMove) {
         return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 17 || potentialMove == 10 || potentialMove == -6 || potentialMove == -15);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.KNIGHT.toString();
     }
 }
