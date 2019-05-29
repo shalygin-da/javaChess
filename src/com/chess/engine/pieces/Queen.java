@@ -15,7 +15,7 @@ public class Queen extends Piece {
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9,-8, -7, -1, 1, 7, 8, 9};
 
     public Queen(final Team team, final int position) {
-        super(position, team);
+        super(PieceType.QUEEN, position, team, hashCode);
     }
 
     @Override
@@ -44,6 +44,11 @@ public class Queen extends Piece {
             }
         }
         return moves;
+    }
+
+    @Override
+    public Queen movePiece(Move move) {
+        return new Queen(move.getMovedPiece().getTeam(), move.getDest());
     }
 
     private static boolean isFirstColumnExclusion(final int position, final int potentialMove) {

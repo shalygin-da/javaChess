@@ -16,7 +16,7 @@ public class Pawn extends Piece {
     private static final int[] POTENTIAL_MOVE_COORDS = {8, 16, 7, 9};
 
     public Pawn(final Team team, final int position) {
-        super(position, team);
+        super(PieceType.PAWN, position, team, hashCode);
     }
 
     @Override
@@ -60,6 +60,11 @@ public class Pawn extends Piece {
             }
         }
         return moves;
+    }
+
+    @Override
+    public Pawn movePiece(Move move) {
+        return new Pawn(move.getMovedPiece().getTeam(), move.getDest());
     }
 
     @Override

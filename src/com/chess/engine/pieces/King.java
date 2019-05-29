@@ -17,7 +17,7 @@ public class King extends Piece {
     private final static int[] POTENTIAL_MOVE_COORDS = {-9, -8, -7, -1, 1, 7, 8, 9,};
 
     public King(final Team team, final int position) {
-        super(position, team);
+        super(PieceType.KING, position, team, hashCode);
     }
 
     @Override
@@ -44,6 +44,11 @@ public class King extends Piece {
             }
         }
         return moves;
+    }
+
+    @Override
+    public King movePiece(Move move) {
+        return new King(move.getMovedPiece().getTeam(), move.getDest());
     }
 
     private static boolean isFirstColumnExclusion(final int position, final int potentialMove) {

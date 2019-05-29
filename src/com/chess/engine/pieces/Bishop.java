@@ -17,7 +17,7 @@ public class Bishop extends Piece {
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9, -7, 7, 9};
 
     public Bishop(final Team team, final int position) {
-        super(position, team);
+        super(PieceType.BISHOP, position, team, hashCode);
     }
 
     @Override
@@ -46,6 +46,11 @@ public class Bishop extends Piece {
             }
         }
         return moves;
+    }
+
+    @Override
+    public Bishop movePiece(Move move) {
+        return new Bishop(move.getMovedPiece().getTeam(), move.getDest());
     }
 
     private static boolean isFirstColumnExclusion(final int position, final int potentialMove) {

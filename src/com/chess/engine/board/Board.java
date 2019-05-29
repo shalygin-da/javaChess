@@ -2,6 +2,9 @@ package com.chess.engine.board;
 
 import com.chess.engine.Team;
 import com.chess.engine.pieces.*;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
+import com.chess.engine.player.WhitePlayer;
 
 import java.util.*;
 
@@ -11,13 +14,22 @@ public class Board {
     private final Collection<Piece> whitePieces;
     private final Collection<Piece> blackPieces;
 
-    private Board(Builder builder) {
+    private final WhitePlayer whitePlayer;
+    private final BlackPlayer blackPlayer;
+    private final Player currentPlayer;
+
+    private Board(final Builder builder) {
         this.board = createBoard(builder);
+
         this.whitePieces = calcAlivePieces(this.board, Team.WHITE);
         this.blackPieces = calcAlivePieces(this.board, Team.BLACK);
 
         final Collection<Move> whiteStartMoves = calcMoves(this.whitePieces);
         final Collection<Move> blackStartMoves = calcMoves(this.blackPieces);
+
+        this.whitePlayer = new WhitePlayer(this, whiteStartMoves, blackStartMoves);
+        this.blackPlayer = new BlackPlayer(this, whiteStartMoves, blackStartMoves);
+        this.currentPlayer = builder.nextMover.choosePlayer(this.whitePlayer, this.blackPlayer);
     }
 
     @Override
@@ -31,6 +43,13 @@ public class Board {
             }
         }
         return builder.toString();
+    }
+
+    public Collection<Piece> getWhitePieces() { return this.whitePieces;
+    }
+
+    public Collection<Piece> getBlackPieces() {
+        return this.blackPieces;
     }
 
     private Collection<Move> calcMoves(final Collection<Piece> pieces) {
@@ -110,6 +129,17 @@ public class Board {
         return board.get(tileCoords);
     }
 
+    public Player whitePlayer() {
+        return this.whitePlayer;
+    }
+
+    public Player blackPlayer() {
+        return this.blackPlayer;
+    }
+
+    public Player currentPlayer() {
+        return this.currentPlayer;
+    }
 
     public static class Builder {
 
