@@ -15,7 +15,7 @@ public class Rook extends Piece{
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-8, -1, 1, 8};
 
     public Rook(final Team team, final int position) {
-        super(PieceType.ROOK, position, team, hashCode);
+        super(PieceType.ROOK, position, team);
     }
 
     @Override

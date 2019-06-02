@@ -1,5 +1,6 @@
 package com.chess.engine.pieces;
 
+
 import com.chess.engine.Team;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
@@ -14,7 +15,7 @@ public abstract class Piece {
     protected final PieceType pieceType;
     private final int cashedHashCode;
 
-    Piece(final PieceType pieceType, final int position, final Team team, int hashCode) {
+    Piece(final PieceType pieceType, final int position, final Team team) {
         this.team = team;
         this.pieceType = pieceType;
         this.position = position;

@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Queen extends Piece {
+public class Bishop extends Piece {
 
-    private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9,-8, -7, -1, 1, 7, 8, 9};
+    private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9, -7, 7, 9};
 
-    public Queen(final Team team, final int position) {
-        super(PieceType.QUEEN, position, team, hashCode);
+    public Bishop(final Team team, final int position) {
+        super(PieceType.BISHOP, position, team);
     }
 
     @Override
@@ -47,20 +47,21 @@ public class Queen extends Piece {
     }
 
     @Override
-    public Queen movePiece(Move move) {
-        return new Queen(move.getMovedPiece().getTeam(), move.getDest());
+    public Bishop movePiece(Move move) {
+        return new Bishop(move.getMovedPiece().getTeam(), move.getDest());
     }
 
     private static boolean isFirstColumnExclusion(final int position, final int potentialMove) {
-        return BoardUtils.FIRST_COLUMN[position] && (potentialMove == -9 || potentialMove == 7 || potentialMove == -1);
+        return BoardUtils.FIRST_COLUMN[position] && (potentialMove == -9 || potentialMove == 7);
     }
 
     private static boolean isEighthColumnExclusion(final int position, final int potentialMove) {
-        return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 9 || potentialMove == -7 || potentialMove == 1);
+        return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 9 || potentialMove == -7);
     }
 
     @Override
     public String toString() {
-        return PieceType.QUEEN.toString();
+        return PieceType.BISHOP.toString();
     }
+
 }

@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.chess.engine.board.Move.*;
 
 public class Pawn extends Piece {
 
     private static final int[] POTENTIAL_MOVE_COORDS = {8, 16, 7, 9};
 
     public Pawn(final Team team, final int position) {
-        super(PieceType.PAWN, position, team, hashCode);
+        super(PieceType.PAWN, position, team);
     }
 
     @Override
@@ -29,13 +28,13 @@ public class Pawn extends Piece {
             final int potentialDest = this.position + (this.team.getDirection() * currentPotentialMove);
             if (!BoardUtils.isValidCoord(potentialDest)) continue;
             if (currentPotentialMove == 8 && !board.getTile(potentialDest).isOccupied()) { //todo promotions
-                moves.add(new OrdMove(board, this, potentialDest));
+                moves.add(new Move.OrdMove(board, this, potentialDest));
             } else if (this.isFirstMove() &&
                     (BoardUtils.SECOND_ROW[this.position] && this.getTeam().isBlack()) ||
                     (BoardUtils.SEVENTH_ROW[this.position] && this.getTeam().isWhite())) {
                 final int behindPotentialDest = this.position + (this.getTeam().getDirection() * 8);
                 if (!board.getTile(behindPotentialDest).isOccupied() && !board.getTile(potentialDest).isOccupied()) {
-                    moves.add(new OrdMove(board, this, behindPotentialDest));
+                    moves.add(new Move.OrdMove(board, this, behindPotentialDest));
                 }
             } else if (currentPotentialMove == 7 &&
                     !((BoardUtils.EIGHTH_COLUMN[this.position] && this.team.isWhite()) ||
@@ -44,7 +43,7 @@ public class Pawn extends Piece {
                     final Piece pieceOnDest = board.getTile(potentialDest).getPiece();
                     if (this.team != pieceOnDest.getTeam()) {
                         // TODO pawn atk
-                        moves.add(new AtkMove(board, this, potentialDest, pieceOnDest));
+                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceOnDest));
                     }
                 }
             } else if (currentPotentialMove == 9 &&
@@ -54,7 +53,7 @@ public class Pawn extends Piece {
                     final Piece pieceOnDest = board.getTile(potentialDest).getPiece();
                     if (this.team != pieceOnDest.getTeam()) {
                         // TODO pawn atk
-                        moves.add(new AtkMove(board, this, potentialDest, pieceOnDest));
+                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceOnDest));
                     }
                 }
             }

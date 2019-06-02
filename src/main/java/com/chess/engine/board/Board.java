@@ -76,7 +76,7 @@ public class Board {
 
     private List<Tile> createBoard(final Builder builder) {
         final Tile[] tiles = new Tile[BoardUtils.NUM_TILES];
-        List<Tile> tileList = new ArrayList<>();
+        List<Tile> tileList = new ArrayList<Tile>();
         for (int i = 0; i< BoardUtils.NUM_TILES; i++) {
             tiles[i] = Tile.create(i, builder.config.get(i));
             tileList.add(tiles[i]);
@@ -139,6 +139,10 @@ public class Board {
 
     public Player currentPlayer() {
         return this.currentPlayer;
+    }
+
+    public Iterable<Move> getAllLegalMoves() {
+        return this.whitePlayer.getMoves();
     }
 
     public static class Builder {

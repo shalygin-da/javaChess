@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.chess.engine.board.Move.*;
 
-public class Bishop extends Piece {
+public class Queen extends Piece {
 
-    private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9, -7, 7, 9};
+    private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9,-8, -7, -1, 1, 7, 8, 9};
 
-    public Bishop(final Team team, final int position) {
-        super(PieceType.BISHOP, position, team, hashCode);
+    public Queen(final Team team, final int position) {
+        super(PieceType.QUEEN, position, team);
     }
 
     @Override
@@ -32,13 +31,13 @@ public class Bishop extends Piece {
                 if (BoardUtils.isValidCoord(potentialDest)) {
                     final Tile potentialDestTile = board.getTile(potentialDest);
                     if (!potentialDestTile.isOccupied()) {
-                        moves.add(new OrdMove(board, this, potentialDest));
+                        moves.add(new Move.OrdMove(board, this, potentialDest));
                     } else {
                         final Piece pieceAtDest = potentialDestTile.getPiece();
                         final Team team = pieceAtDest.getTeam();
 
                         if (this.team != team) {
-                            moves.add(new AtkMove(board, this, potentialDest, pieceAtDest));
+                            moves.add(new Move.AtkMove(board, this, potentialDest, pieceAtDest));
                         }
                         break;
                     }
@@ -49,21 +48,20 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Bishop movePiece(Move move) {
-        return new Bishop(move.getMovedPiece().getTeam(), move.getDest());
+    public Queen movePiece(Move move) {
+        return new Queen(move.getMovedPiece().getTeam(), move.getDest());
     }
 
     private static boolean isFirstColumnExclusion(final int position, final int potentialMove) {
-        return BoardUtils.FIRST_COLUMN[position] && (potentialMove == -9 || potentialMove == 7);
+        return BoardUtils.FIRST_COLUMN[position] && (potentialMove == -9 || potentialMove == 7 || potentialMove == -1);
     }
 
     private static boolean isEighthColumnExclusion(final int position, final int potentialMove) {
-        return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 9 || potentialMove == -7);
+        return BoardUtils.EIGHTH_COLUMN[position] && (potentialMove == 9 || potentialMove == -7 || potentialMove == 1);
     }
 
     @Override
     public String toString() {
-        return PieceType.BISHOP.toString();
+        return PieceType.QUEEN.toString();
     }
-
 }

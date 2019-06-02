@@ -1,5 +1,6 @@
 package com.chess.engine.player;
 
+
 import com.chess.engine.Team;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
@@ -7,25 +8,25 @@ import com.chess.engine.pieces.Piece;
 
 import java.util.Collection;
 
-public class WhitePlayer extends Player{
+public class BlackPlayer extends Player {
 
 
-    public WhitePlayer(final Board board, final Collection<Move> whiteStartMoves, final Collection<Move> blackStartMoves) {
-        super(board, whiteStartMoves, blackStartMoves);
+    public BlackPlayer(final Board board, final Collection<Move> blackStartMoves, final Collection<Move> whiteStartMoves) {
+        super(board, blackStartMoves, whiteStartMoves);
     }
 
     @Override
     public Collection<Piece> getAlivePieces() {
-        return this.board.getWhitePieces();
+        return this.board.getBlackPieces();
     }
 
     @Override
     public Team getTeam() {
-        return Team.WHITE;
+        return Team.BLACK;
     }
 
     @Override
     public Player getOpponent() {
-        return this.board.blackPlayer();
+        return this.board.whitePlayer();
     }
 }

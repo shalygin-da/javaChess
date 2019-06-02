@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.chess.engine.board.Move.*;
 
 public class Knight extends Piece {
 
     private final static int[] POTENTIAL_MOVE_COORDS = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     public Knight(final Team team, final int position) {
-        super(PieceType.KNIGHT, position, team, hashCode);
+        super(PieceType.KNIGHT, position, team);
     }
 
     @Override
@@ -36,12 +35,12 @@ public class Knight extends Piece {
                 }
                 final Tile potentialDestTile = board.getTile(potentialDest);
                 if (!potentialDestTile.isOccupied()) {
-                    moves.add(new OrdMove(board, this, potentialDest));
+                    moves.add(new Move.OrdMove(board, this, potentialDest));
                 } else {
                     final Piece pieceAtDest = potentialDestTile.getPiece();
                     final Team team = pieceAtDest.getTeam();
                     if (this.team != team) {
-                        moves.add(new AtkMove(board, this, potentialDest, pieceAtDest));
+                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceAtDest));
                     }
                 }
             }
