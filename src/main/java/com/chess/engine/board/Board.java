@@ -115,8 +115,8 @@ public class Board {
         builder.setPiece(new Rook(Team.WHITE, 56));
         builder.setPiece(new Knight(Team.WHITE, 57));
         builder.setPiece(new Bishop(Team.WHITE, 58));
-        builder.setPiece(new King(Team.WHITE, 59));
-        builder.setPiece(new Queen(Team.WHITE, 60));
+        builder.setPiece(new Queen(Team.WHITE, 59));
+        builder.setPiece(new King(Team.WHITE, 60));
         builder.setPiece(new Bishop(Team.WHITE, 61));
         builder.setPiece(new Knight(Team.WHITE, 62));
         builder.setPiece(new Rook(Team.WHITE, 63));

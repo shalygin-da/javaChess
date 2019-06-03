@@ -15,7 +15,11 @@ public class Pawn extends Piece {
     private static final int[] POTENTIAL_MOVE_COORDS = {8, 16, 7, 9};
 
     public Pawn(final Team team, final int position) {
-        super(PieceType.PAWN, position, team);
+        super(PieceType.PAWN, position, team, true);
+    }
+
+    public Pawn(final Team team, final int position, final boolean isFirstMove) {
+        super(PieceType.PAWN, position, team, isFirstMove);
     }
 
     @Override
@@ -29,9 +33,7 @@ public class Pawn extends Piece {
             if (!BoardUtils.isValidCoord(potentialDest)) continue;
             if (currentPotentialMove == 8 && !board.getTile(potentialDest).isOccupied()) { //todo promotions
                 moves.add(new Move.OrdMove(board, this, potentialDest));
-            } else if (this.isFirstMove() &&
-                    (BoardUtils.SEVENTH_RANK[this.position] && this.getTeam().isBlack()) ||
-                    (BoardUtils.SECOND_RANK[this.position] && this.getTeam().isWhite())) {
+            } else if (this.isFirstMove()) {
                 final int behindPotentialDest = this.position + (this.getTeam().getDirection() * 8);
                 if (!board.getTile(behindPotentialDest).isOccupied() && !board.getTile(potentialDest).isOccupied()) {
                     moves.add(new Move.OrdMove(board, this, behindPotentialDest));

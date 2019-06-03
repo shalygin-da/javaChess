@@ -15,13 +15,12 @@ public abstract class Piece {
     protected final PieceType pieceType;
     private final int cashedHashCode;
 
-    Piece(final PieceType pieceType, final int position, final Team team) {
+    Piece(final PieceType pieceType, final int position, final Team team, final boolean isFirstMove) {
         this.team = team;
         this.pieceType = pieceType;
         this.position = position;
         this.cashedHashCode = computeHashCode();
-        //todo first move
-        this.isFirstMove = false;
+        this.isFirstMove = isFirstMove;
 
     }
 

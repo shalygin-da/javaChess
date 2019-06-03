@@ -16,7 +16,11 @@ public class Knight extends Piece {
     private final static int[] POTENTIAL_MOVE_COORDS = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     public Knight(final Team team, final int position) {
-        super(PieceType.KNIGHT, position, team);
+        super(PieceType.KNIGHT, position, team, true);
+    }
+
+    public Knight(final Team team, final int position, final boolean isFirstMove) {
+        super(PieceType.KNIGHT, position, team, isFirstMove);
     }
 
     @Override

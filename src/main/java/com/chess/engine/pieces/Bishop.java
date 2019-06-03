@@ -15,7 +15,11 @@ public class Bishop extends Piece {
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDS = {-9, -7, 7, 9};
 
     public Bishop(final Team team, final int position) {
-        super(PieceType.BISHOP, position, team);
+        super(PieceType.BISHOP, position, team, true);
+    }
+
+    public Bishop(final Team team, final int position, final boolean isFirstMove) {
+        super(PieceType.BISHOP, position, team, isFirstMove);
     }
 
     @Override
