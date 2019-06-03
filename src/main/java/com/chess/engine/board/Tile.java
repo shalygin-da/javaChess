@@ -8,7 +8,7 @@ import java.util.Map;
 public abstract class Tile extends Object{
 
 
-    protected final int tileCoords;
+    protected final int tileCoord;
 
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createTiles();
 
@@ -28,12 +28,16 @@ public abstract class Tile extends Object{
     }
 
     private Tile(final int tileCoords) {
-        this.tileCoords = tileCoords;
+        this.tileCoord = tileCoords;
     }
 
     public abstract  boolean isOccupied();
 
     public abstract Piece getPiece();
+
+    public int getTileCoord() {
+        return this.tileCoord;
+    }
 
     public static final class EmptyTile extends Tile {
 

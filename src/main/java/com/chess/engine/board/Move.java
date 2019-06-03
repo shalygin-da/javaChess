@@ -1,6 +1,8 @@
 package com.chess.engine.board;
 
+import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 
 public abstract class Move {
 
@@ -18,6 +20,23 @@ public abstract class Move {
         this.dest = dest;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int ans = 1;
+        ans = prime * ans * this.dest;
+        ans = prime * ans * this.hashCode();
+        return ans;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Move)) return false;
+        final Move otherMove = (Move) other;
+        return getDest() == otherMove.getDest() && getMovedPiece().equals(otherMove.getMovedPiece());
+    }
+
     public int getCurrentCoord() {
         return this.movedPiece.getPosition();
     }
@@ -28,6 +47,18 @@ public abstract class Move {
 
     public Piece getMovedPiece() {
         return movedPiece;
+    }
+
+    public boolean isAtk() {
+        return false;
+    }
+
+    public boolean isCastling() {
+        return false;
+    }
+
+    public Piece getAttackedPiece() {
+        return null;
     }
 
     public Board execute() {
@@ -64,8 +95,31 @@ public abstract class Move {
         }
 
         @Override
+        public int hashCode() {
+            return this.attackedPiece.hashCode() + super.hashCode();
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            if (this == other) return true;
+            if (!(other instanceof AtkMove)) return false;
+            final AtkMove otherAtkMove = (AtkMove) other;
+            return super.equals(otherAtkMove) && getAttackedPiece().equals(otherAtkMove.getAttackedPiece());
+        }
+
+        @Override
         public Board execute() {
             return null;
+        }
+
+        @Override
+        public boolean isAtk() {
+            return true;
+        }
+
+        @Override
+        public Piece getAttackedPiece() {
+            return this.attackedPiece;
         }
     }
 
@@ -99,28 +153,97 @@ public abstract class Move {
             super(board, movedPiece, dest);
         }
 
+        @Override
+        public Board execute() {
+
+            final Board.Builder builder = new Board.Builder();
+            for (final Piece piece : this.board.currentPlayer().getAlivePieces()) {
+                if (!this.movedPiece.equals(piece)) builder.setPiece(piece);
+            }
+            for (final Piece piece: this.board.currentPlayer().getOpponent().getAlivePieces()) builder.setPiece(piece);
+            final Pawn movedPawn = (Pawn) this.movedPiece.movePiece(this);
+            builder.setPiece(movedPawn);
+            builder.setEnPassant(movedPawn);
+            builder.setMover(this.board.currentPlayer().getOpponent().getTeam());
+            return builder.build();
+
+        }
     }
 
     static abstract class CastleMove extends Move {
 
-        public CastleMove(final Board board, final Piece movedPiece, final int dest) {
+        protected final Rook rook;
+        protected final int rookStart;
+        protected final int rookdest;
+
+        public CastleMove(final Board board,
+                          final Piece movedPiece,
+                          final int dest,
+                          final Rook rook,
+                          final int rookStart,
+                          final int rookdest) {
             super(board, movedPiece, dest);
+            this.rook = rook;
+            this.rookStart = rookStart;
+            this.rookdest = rookdest;
+        }
+
+        public Rook getRook() {
+            return this.rook;
+        }
+
+        @Override
+        public boolean isCastling() {
+            return true;
+        }
+
+        @Override
+        public Board execute() {
+
+            final Board.Builder builder = new Board.Builder();
+            for (final Piece piece: this.board.currentPlayer().getAlivePieces()) {
+                if (!this.movedPiece.equals(piece) && !this.rook.equals(piece)) builder.setPiece(piece);
+            }
+            for (final Piece piece: this.board.currentPlayer().getOpponent().getAlivePieces()) builder.setPiece(piece);
+            builder.setPiece(this.movedPiece.movePiece(this));
+            builder.setPiece(new Rook(this.rook.getTeam(), this.rookdest));
+            builder.setMover(this.board.currentPlayer().getOpponent().getTeam());
+            return builder.build();
+        }
+    }
+
+    public static class KingSideCastleMove extends CastleMove {
+
+        public KingSideCastleMove(final Board board,
+                                  final Piece movedPiece,
+                                  final int dest,
+                                  final Rook rook,
+                                  final int rookStart,
+                                  final int rookdest) {
+            super(board, movedPiece, dest, rook, rookStart, rookdest);
+        }
+
+        @Override
+        public String toString() {
+            return "0-0";
         }
 
     }
 
-    static abstract class KingSideCastleMove extends CastleMove {
+    public static class QueenSideCastleMove extends CastleMove {
 
-        public KingSideCastleMove(final Board board, final Piece movedPiece, final int dest) {
-            super(board, movedPiece, dest);
+        public QueenSideCastleMove(final Board board,
+                                   final Piece movedPiece,
+                                   final int dest,
+                                   final Rook rook,
+                                   final int rookStart,
+                                   final int rookdest) {
+            super(board, movedPiece, dest, rook, rookStart, rookdest);
         }
 
-    }
-
-    static abstract class QueenSideCastleMove extends CastleMove {
-
-        public QueenSideCastleMove(final Board board, final Piece movedPiece, final int dest) {
-            super(board, movedPiece, dest);
+        @Override
+        public String toString() {
+            return "0-0-0";
         }
 
     }

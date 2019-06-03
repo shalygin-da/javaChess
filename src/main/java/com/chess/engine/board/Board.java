@@ -5,6 +5,7 @@ import com.chess.engine.pieces.*;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
+import com.google.common.collect.Iterables;
 
 import java.util.*;
 
@@ -142,13 +143,14 @@ public class Board {
     }
 
     public Iterable<Move> getAllLegalMoves() {
-        return this.whitePlayer.getMoves();
+        return Iterables.concat(this.whitePlayer.getMoves(), this.blackPlayer.getMoves());
     }
 
     public static class Builder {
 
         Map<Integer, Piece> config;
         Team nextMover;
+        Pawn enPassantPawn;
 
         public Builder() {
             this.config = new HashMap<>();
@@ -166,6 +168,10 @@ public class Board {
 
         public Board build() {
             return new Board(this);
+        }
+
+        public void setEnPassant(Pawn enPassantPawn) {
+            this.enPassantPawn = enPassantPawn;
         }
     }
 }
