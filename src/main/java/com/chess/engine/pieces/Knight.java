@@ -39,12 +39,12 @@ public class Knight extends Piece {
                 }
                 final Tile potentialDestTile = board.getTile(potentialDest);
                 if (!potentialDestTile.isOccupied()) {
-                    moves.add(new Move.OrdMove(board, this, potentialDest));
+                    moves.add(new Move.OrdMove(board, this, potentialDest, false));
                 } else {
                     final Piece pieceAtDest = potentialDestTile.getPiece();
                     final Team team = pieceAtDest.getTeam();
                     if (this.team != team) {
-                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceAtDest));
+                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceAtDest, false));
                     }
                 }
             }

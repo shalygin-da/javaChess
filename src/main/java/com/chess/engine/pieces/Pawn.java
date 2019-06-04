@@ -32,11 +32,11 @@ public class Pawn extends Piece {
             final int potentialDest = this.position + (this.team.getDirection() * currentPotentialMove);
             if (!BoardUtils.isValidCoord(potentialDest)) continue;
             if (currentPotentialMove == 8 && !board.getTile(potentialDest).isOccupied()) { //todo promotions
-                moves.add(new Move.OrdMove(board, this, potentialDest));
-            } else if (this.isFirstMove()) {
+                moves.add(new Move.PawnMove(board, this, potentialDest));
+            } else if (currentPotentialMove == 16 && this.isFirstMove()) {
                 final int behindPotentialDest = this.position + (this.getTeam().getDirection() * 8);
                 if (!board.getTile(behindPotentialDest).isOccupied() && !board.getTile(potentialDest).isOccupied()) {
-                    moves.add(new Move.OrdMove(board, this, behindPotentialDest));
+                    moves.add(new Move.PawnJump(board, this, behindPotentialDest));
                 }
             } else if (currentPotentialMove == 7 &&
                     !((BoardUtils.EIGHTH_COLUMN[this.position] && this.team.isWhite()) ||
@@ -45,7 +45,7 @@ public class Pawn extends Piece {
                     final Piece pieceOnDest = board.getTile(potentialDest).getPiece();
                     if (this.team != pieceOnDest.getTeam()) {
                         // TODO pawn atk
-                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceOnDest));
+                        moves.add(new Move.PawnAtkMove(board, this, potentialDest, pieceOnDest));
                     }
                 }
             } else if (currentPotentialMove == 9 &&
@@ -55,7 +55,7 @@ public class Pawn extends Piece {
                     final Piece pieceOnDest = board.getTile(potentialDest).getPiece();
                     if (this.team != pieceOnDest.getTeam()) {
                         // TODO pawn atk
-                        moves.add(new Move.AtkMove(board, this, potentialDest, pieceOnDest));
+                        moves.add(new Move.PawnAtkMove(board, this, potentialDest, pieceOnDest));
                     }
                 }
             }

@@ -6,26 +6,36 @@ import com.chess.engine.pieces.Rook;
 
 public abstract class Move {
 
-    final Board board;
-    final Piece movedPiece;
-    final int dest;
+    protected final Board board;
+    protected final Piece movedPiece;
+    protected final int dest;
+    protected final boolean isFirstMove;
 
     public static final Move NULL_MOVE = new NullMove();
 
-    Move(final Board board,
+    private Move(final Board board,
          final Piece movedPiece,
-         final int dest) {
+         final int dest, boolean isFirstMove) {
         this.board = board;
         this.movedPiece = movedPiece;
         this.dest = dest;
+        this.isFirstMove = movedPiece.isFirstMove();
+    }
+
+    private Move(final Board board,
+         final int dest) {
+        this.board = board;
+        this.movedPiece = null;
+        this.dest = dest;
+        this.isFirstMove = false;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
         int ans = 1;
-        ans = prime * ans * this.dest;
-        ans = prime * ans * this.hashCode();
+        ans = 31 * ans * this.dest;
+        ans = 31 * ans * this.hashCode();
+        ans = 31 * ans * this.movedPiece.getPosition();
         return ans;
     }
 
@@ -34,7 +44,9 @@ public abstract class Move {
         if (this == other) return true;
         if (!(other instanceof Move)) return false;
         final Move otherMove = (Move) other;
-        return getDest() == otherMove.getDest() && getMovedPiece().equals(otherMove.getMovedPiece());
+        return getCurrentCoord() == otherMove.getCurrentCoord() &&
+                getDest() == otherMove.getDest() &&
+                getMovedPiece().equals(otherMove.getMovedPiece());
     }
 
     public int getCurrentCoord() {
@@ -79,8 +91,18 @@ public abstract class Move {
 
     public static final class OrdMove extends Move {
 
-        public OrdMove(final Board board, final Piece movedPiece, final int dest) {
-            super(board, movedPiece, dest);
+        public OrdMove(final Board board, final Piece movedPiece, final int dest, final boolean isFirstMove) {
+            super(board, movedPiece, dest, isFirstMove);
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof OrdMove && super.equals(other);
+        }
+
+        @Override
+        public String toString() {
+            return movedPiece.getPieceType().toString() + BoardUtils.getCoordAtPos(this.dest);
         }
 
     }
@@ -89,8 +111,8 @@ public abstract class Move {
 
         final Piece attackedPiece;
 
-        public AtkMove(final Board board, final Piece movedPiece, final int dest, final Piece attackedPiece) {
-            super(board, movedPiece, dest);
+        public AtkMove(final Board board, final Piece movedPiece, final int dest, final Piece attackedPiece, final boolean isFirstMove) {
+            super(board, movedPiece, dest, isFirstMove);
             this.attackedPiece = attackedPiece;
         }
 
@@ -125,8 +147,8 @@ public abstract class Move {
 
     public static final class PawnMove extends Move {
 
-        public PawnMove(final Board board, final Piece movedPiece, final int dest) {
-            super(board, movedPiece, dest);
+        public PawnMove(final Board board, final Piece movedPiece, final int dest, final boolean isFirstMove) {
+            super(board, movedPiece, dest, isFirstMove);
         }
 
     }
@@ -134,7 +156,7 @@ public abstract class Move {
     public static final class PawnAtkMove extends AtkMove {
 
         public PawnAtkMove(final Board board, final Piece movedPiece, final int dest, final Piece attackedPiece) {
-            super(board, movedPiece, dest, attackedPiece);
+            super(board, movedPiece, dest, attackedPiece, false);
         }
 
     }
@@ -142,15 +164,15 @@ public abstract class Move {
     public static final class PawnEnPassantMove extends AtkMove {
 
         public PawnEnPassantMove(final Board board, final Piece movedPiece, final int dest, final Piece attackedPiece) {
-            super(board, movedPiece, dest, attackedPiece);
+            super(board, movedPiece, dest, attackedPiece, false);
         }
 
     }
 
     public static final class PawnJump extends Move {
 
-        public PawnJump(final Board board, final Piece movedPiece, final int dest) {
-            super(board, movedPiece, dest);
+        public PawnJump(final Board board, final Piece movedPiece, final int dest, final boolean isFirstMove) {
+            super(board, movedPiece, dest, isFirstMove);
         }
 
         @Override
@@ -181,8 +203,9 @@ public abstract class Move {
                           final int dest,
                           final Rook rook,
                           final int rookStart,
-                          final int rookdest) {
-            super(board, movedPiece, dest);
+                          final int rookdest,
+                          final boolean isFirstMove) {
+            super(board, movedPiece, dest, isFirstMove);
             this.rook = rook;
             this.rookStart = rookStart;
             this.rookdest = rookdest;
@@ -219,8 +242,9 @@ public abstract class Move {
                                   final int dest,
                                   final Rook rook,
                                   final int rookStart,
-                                  final int rookdest) {
-            super(board, movedPiece, dest, rook, rookStart, rookdest);
+                                  final int rookdest,
+                                  final boolean isFirstMove) {
+            super(board, movedPiece, dest, rook, rookStart, rookdest, isFirstMove);
         }
 
         @Override
@@ -237,8 +261,9 @@ public abstract class Move {
                                    final int dest,
                                    final Rook rook,
                                    final int rookStart,
-                                   final int rookdest) {
-            super(board, movedPiece, dest, rook, rookStart, rookdest);
+                                   final int rookdest,
+                                   final boolean isFirstMove) {
+            super(board, movedPiece, dest, rook, rookStart, rookdest, isFirstMove);
         }
 
         @Override
@@ -251,7 +276,7 @@ public abstract class Move {
     static class NullMove extends Move {
 
         public NullMove() {
-            super(null, null, -1);
+            super(null, null, -1, false);
         }
 
         @Override

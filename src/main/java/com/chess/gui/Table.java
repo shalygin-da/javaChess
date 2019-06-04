@@ -38,7 +38,7 @@ public class Table {
     private BoardDirection boardDirection;
     private boolean highlightLegalMoves;
 
-    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension (800, 700);
+    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension (600, 600);
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private static final Dimension PANEL_DIMENSION = new Dimension(10,10);
 

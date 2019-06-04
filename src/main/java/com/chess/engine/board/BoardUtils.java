@@ -1,6 +1,20 @@
 package com.chess.engine.board;
 
+import java.util.Map;
+
 public class BoardUtils {
+
+    private static final String[] ALGEBRAIC_NOTATION = initAlgNotation();
+
+    private static String[] initAlgNotation() {
+        return null;
+    }
+
+    private static final Map<String, Integer> POSITION_TO_COORD = initPosToCoord();
+
+    private static Map<String, Integer> initPosToCoord() {
+        return null;
+    }
 
     private static boolean[] initColumn(int columnNumber) {
         final boolean[] column = new boolean[64];
@@ -42,5 +56,13 @@ public class BoardUtils {
     }
     public static boolean isValidCoord(int coord) {
         return coord >= 0 && coord < 64;
+    }
+
+    public static int getCoordAtPos(int position) {
+        return POSITION_TO_COORD.get(position);
+    }
+
+    public static String getPosAtCoord(int coord) {
+        return ALGEBRAIC_NOTATION[coord];
     }
 }
